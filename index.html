@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Braking Test</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="logo.ico">
+</head>
+
+<body>
+<form id="myForm">
+  <div class="container">
+    <h2>Form Input Braking Test</h2>
+
+    <!-- SESI -->
+    <div class="form-group">
+      <label>Sesi</label>
+      <select id="sesi" required>
+        <option value="">-- Pilih Sesi --</option>
+        <option value="1">Sesi 1</option>
+        <option value="2">Sesi 2</option>
+        <option value="3">Sesi 3</option>
+        <option value="4">Sesi 4</option>
+        <option value="5">Sesi 5</option>
+      </select>
+    </div>
+
+    <!-- BRAND -->
+    <div class="form-group">
+      <label>Brand</label>
+      <select id="brand" required>
+        <option value="">-- Pilih Brand --</option>
+        <option value="Dunlop">Dunlop</option>
+        <option value="Kompetitor">Kompetitor</option>
+      </select>
+    </div>
+
+    <!-- TYPE -->
+    <div class="form-group">
+      <label>Road Condition</label>
+      <select id="type" required>
+        <option value="">-- Pilih Kondisi --</option>
+        <option value="1">Dry</option>
+        <option value="2">Wet</option>
+      </select>
+    </div>
+
+    <hr>
+
+    <!-- T1 - T5 -->
+    <div class="input-group">
+      <label>T1</label>
+      <input type="number" id="t1" step="0.01">
+    </div>
+
+    <div class="input-group">
+      <label>T2</label>
+      <input type="number" id="t2" step="0.01">
+    </div>
+
+    <div class="input-group">
+      <label>T3</label>
+      <input type="number" id="t3" step="0.01">
+    </div>
+
+    <div class="input-group">
+      <label>T4</label>
+      <input type="number" id="t4" step="0.01">
+    </div>
+
+    <div class="input-group">
+      <label>T5</label>
+      <input type="number" id="t5" step="0.01">
+    </div>
+
+    <button type="submit">Simpan Data</button>
+  </div>
+</form>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
