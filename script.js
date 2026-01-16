@@ -29,13 +29,17 @@ function todayRange() {
 
 /* ===== LOAD DATA HARI INI ===== */
 async function loadData() {
+  showLoading();
   Object.values(inputs).forEach(i => i.value = "");
 
-  if (!sesiEl.value || !brandEl.value || !typeEl.value) return;
+  if (!sesiEl.value || !brandEl.value || !typeEl.value) {
+    hideLoading();
+    return;
+  }
 
   const { start, end } = todayRange();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("braking")
     .select("*")
     .eq("sesi", sesiEl.value)
@@ -44,13 +48,21 @@ async function loadData() {
     .gte("created_at", start)
     .lte("created_at", end)
     .limit(1)
-    .single();
+    .maybeSingle(); 
+
+  if (error) {
+    console.error("Load data error:", error.message);
+    hideLoading();
+    return;
+  }
 
   if (data) {
     Object.keys(inputs).forEach(k => {
       inputs[k].value = data[k] ?? "";
     });
   }
+
+  hideLoading();
 }
 
 sesiEl.addEventListener("change", loadData);
@@ -82,10 +94,14 @@ form.addEventListener("submit", async (e) => {
     cancelButtonText: "Batal"
   });
 
-  if (!confirm.isConfirmed) return;
+  if (!confirm.isConfirmed) {
+    return;
+  }
+
+  showLoading();
 
   /* ===== CEK DATA EXIST ===== */
-  const { data: existing } = await supabase
+  const { data: existing, error: checkError } = await supabase
     .from("braking")
     .select("id")
     .eq("sesi", payload.sesi)
@@ -94,7 +110,13 @@ form.addEventListener("submit", async (e) => {
     .gte("created_at", start)
     .lte("created_at", end)
     .limit(1)
-    .single();
+    .maybeSingle(); 
+
+  if (checkError) {
+    Swal.fire("Error", checkError.message, "error");
+    hideLoading();
+    return;
+  }
 
   let result;
 
@@ -109,6 +131,8 @@ form.addEventListener("submit", async (e) => {
       .insert([payload]);
   }
 
+  hideLoading();
+
   if (result.error) {
     Swal.fire("Error", result.error.message, "error");
   } else {
@@ -116,3 +140,11 @@ form.addEventListener("submit", async (e) => {
     loadData();
   }
 });
+
+function showLoading() {
+  document.getElementById("loadingOverlay").style.display = "flex";
+}
+
+function hideLoading() {
+  document.getElementById("loadingOverlay").style.display = "none";
+}
